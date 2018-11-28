@@ -7,10 +7,13 @@ ENV DEPLOY_DIR /maven
 
 
 # Get and Unpack Tomcat
-RUN wget http://archive.apache.org/dist/tomcat/tomcat-6/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/catalina.tar.gz && tar xzf /tmp/catalina.tar.gz -C /opt && mv /usr/local/apache-tomcat-${TOMCAT_VERSION} /usr/local/tomcat && rm /tmp/catalina.tar.gz
+RUN wget http://archive.apache.org/dist/tomcat/tomcat-6/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz -O /tmp/catalina.tar.gz && tar xzf /tmp/catalina.tar.gz -C /usr/local && mv /usr/local/apache-tomcat-${TOMCAT_VERSION} /usr/local/tomcat && rm /tmp/catalina.tar.gz
 
 # Add roles
 ADD tomcat-users.xml /usr/local/tomcat/conf/
+
+# Set Encode
+ADD server.xml /usr/local/tomcat/conf/server.xml
 
 # Startup script
 ADD deploy-and-run.sh /usr/local/tomcat/bin/
