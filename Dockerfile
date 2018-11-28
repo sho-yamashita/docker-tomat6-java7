@@ -26,4 +26,19 @@ VOLUME ["/usr/local/tomcat/logs", "/usr/local/tomcat/work", "/usr/local/tomcat/t
 ENV CATALINA_HOME /usr/local/tomcat
 ENV PATH $PATH:$CATALINA_HOME/bin
 
+# install ps command(for confirm java_opts)
+RUN apt-get update && apt install -y procps
+
+# set timezone
+RUN cp /usr/share/zoneinfo/Japan /etc/localtime
+ENV JAVA_OPTS="-Duser.timezone=Asia/Tokyo -Duser.language=ja -Duser.country=JP"
+
+# set memory space
+ENV JAVA_OPTS=$JAVA_OPTS"-Xms2g -Xmx2g -XX:MaxPermSize=256m -XX:PermSize=256m -XX:+HeapDumpOnOutOfMemoryError"
+
+# for remote debug 
+ENV JPDA_ADDRESS="8000"
+ENV JPDA_TRANSPORT="dt_socket"
+EXPOSE 8080
+
 CMD /usr/local/tomcat/bin/deploy-and-run.sh
